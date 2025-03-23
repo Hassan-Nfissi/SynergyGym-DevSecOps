@@ -1,0 +1,64 @@
+pipeline {
+    agent any
+    environment {
+        SCANNER_HOME = tool 'SonarScanner'// use the scanner that we have configure in jenkins
+        DOCKER_CREDENTIALS = "docker_id" 
+    }
+
+    stages {
+        stage('clean workspace') {
+            steps {
+                cleanWs()
+            }
+        }
+        stage('clone the reposetory') {
+            steps {
+                git branch: 'main', url: 'https://github.com/EshaalB/dashboard.git'
+            }
+        }
+        stage('Build and install dependencies') {
+            steps {
+                bat 'npm install'
+            }
+        }
+        stage('Code quality check') { // Correction de 'sage' et 'checek'
+            steps {
+                 bat """ "%SCANNER_HOME%/bin/sonar-scanner" ^
+                 -D"sonar.projectKey=react_app" ^
+                 -D"sonar.sources=." ^
+                 -D"sonar.host.url=http://localhost:9000" ^
+                 -D"sonar.token=sqp_88897e210b9bbe2f6c7ec3a03ad4a548a4684495"
+                 """
+            }
+        }
+        stage('Dependency check') {
+            steps {
+                dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit --nvdApiKey=328bdb0e-22e9-4182-a0cf-964b9455424c', odcInstallation: 'Db_check'
+                dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+            }
+        }
+        stage('Build image') {
+            steps {
+                bat "docker build -t hassan3334/gym-app ."
+            }
+        }
+        stage("login to docker"){
+            steps {
+                withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS}", usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    bat "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
+                    echo "Successfully logged in to Docker Hub"
+                }
+            }
+        }
+        stage('Run image') {
+            steps {
+                echo "docker run --name my-app -p 5050:5050 gym-app"
+            }
+        }
+        stage("Push to Docker Hub") { 
+            steps {
+                echo 'docker push gym-app'
+            }
+        }
+    }
+}
