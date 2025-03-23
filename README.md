@@ -87,19 +87,7 @@ pipeline {
         }
     }
 }
-```
-
-## Screenshots
-
-### Pipeline Flow
-![Jenkins Pipeline Diagram](pipeline_diagram.png)  
-_(Place your pipeline flow diagram here)_
-
-### Jenkins Pipeline Stages
-1. **Jenkins Dashboard**: _[Insert screenshot showing the pipeline in Jenkins]_  
-2. **Build Console Output**: _[Insert screenshot showing the build process]_  
-3. **SonarQube Analysis Report**: _[Insert screenshot of the SonarQube dashboard]_  
-4. **Docker Hub Push Confirmation**: _[Insert screenshot showing the image in Docker Hub]_  
+``` 
 
 ## How to Run the Pipeline
 1. Open Jenkins and create a new pipeline job.
@@ -109,7 +97,4 @@ _(Place your pipeline flow diagram here)_
 
 ## Author
 Hassan Nfissi
-
-## License
-This project is licensed under the MIT License.
 
