@@ -2,7 +2,7 @@
 
 ## Overview
 This project sets up a CI/CD pipeline for a React dashboard using Jenkins. It includes stages for cleaning the workspace, cloning the repository, installing dependencies, performing a code quality check with SonarQube, running a dependency check, building a Docker image, logging into Docker Hub, running the image, and pushing it to Docker Hub.
-
+![image alt](https://github.com/Hassan-Nfissi/SynergyGym-DevSecOps/blob/main/my%20pipline.png?raw=true)
 ## Prerequisites
 - Jenkins installed and configured
 - SonarQube server running on `http://localhost:9000`
